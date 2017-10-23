@@ -3,6 +3,8 @@ package logging
 import (
 	"os"
 
+	"github.com/fresh8/timberyard/mock_bark"
+	"github.com/golang/mock/gomock"
 	"github.com/sirupsen/logrus"
 	"github.com/uber-common/bark"
 )
@@ -45,6 +47,10 @@ func Initialise(opts Opts) {
 	}
 
 	logger = bark.NewLoggerFromLogrus(l)
+}
+
+func InitialiseMock(ctrl *gomock.Controller) {
+	logger = mock_bark.NewMockLogger(ctrl)
 }
 
 // Logger returns the logger object for use

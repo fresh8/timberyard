@@ -7,8 +7,8 @@ import (
 	"github.com/uber-common/bark"
 )
 
-// Fields is an alias for logrus.Fields to keep dem imports tidy like
-type Fields map[string]interface{}
+// Fields is an alias for bark.Fields
+type Fields = bark.Fields
 
 // Log is the importable logger
 var logger bark.Logger

@@ -11,10 +11,13 @@ import (
 type Fields = bark.Fields
 
 // Log is the importable logger
-var logger bark.Logger
-var serviceName string
-var serviceGroup string
-var host string
+var (
+	logger bark.Logger
+	serviceName string
+	serviceGroup string
+	host string
+	LogrusLogger *logrus.Logger
+)
 
 // Initialise sets the logger
 func Initialise(opts Opts) {
@@ -27,24 +30,24 @@ func Initialise(opts Opts) {
 	serviceGroup = opts.ServiceGroup
 	host, _ = os.Hostname()
 
-	l := logrus.New()
+	LogrusLogger = logrus.New()
 	if opts.Formatter == nil {
 		opts.Formatter = &logrus.JSONFormatter{}
 	}
-	l.Formatter = opts.Formatter
+	LogrusLogger.Formatter = opts.Formatter
 
 	level, err := logrus.ParseLevel(opts.Level)
 	if err == nil {
-		l.Level = level
+		LogrusLogger.Level = level
 	} else {
-		l.Level = logrus.ErrorLevel
+		LogrusLogger.Level = logrus.ErrorLevel
 	}
 
 	for _, hook := range opts.Hooks {
-		l.Hooks.Add(hook)
+		LogrusLogger.Hooks.Add(hook)
 	}
 
-	logger = bark.NewLoggerFromLogrus(l)
+	logger = bark.NewLoggerFromLogrus(LogrusLogger)
 }
 
 // Use initialises the logger package from an existing generic logger
